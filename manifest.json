@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "name": "Show Me The Image",
+  "version": "0.1",
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["start.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["idle.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": [
+    "http://*/*",
+    "https://*/*"
+  ]
+}
