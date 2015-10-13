@@ -19,22 +19,33 @@
       submit();
   }
 
-  switch (window.location.hostname) {
-    case 'imgur.com':
-      // check it's not a gallery
-      if (window.location.pathname.substr(0, 3) != '/a/')
-        findAndSet('link[rel=image_src]', 'href');
-      break;
-    case 'imgdrive.co':
-    case 'imgclick.net':
-      setOrSubmit('img.pic');
-      break;
-    case 'xxxscreens.com':
-    case 'nimplus.com':
-      setOrSubmit('img.centred_resized');
-      break;
-    default:
+  var hostname = window.location.hostname;
+
+  // TODO: load from a file?
+  var hostnameToSelector = {
+    'www.imagebam.com': 'div.image-container img',
+    'someimage.com': '#viewimage',
+    'image-bugs.com': '#image-viewer img',
+    'imgia.biz': 'img.centred_resized',
+    'imagedecode.com': 'img.centred',
+    'imgcandy.net': 'img.centred',
+    'imgstudio.org': 'img.centred_resized',
+    'xxxscreens.com': 'img.centred_resized',
+    'nimplus.com': 'img.centred_resized',
+    'newimagepost.com': 'img.centred_resized',
+    'imgtornado.com': 'img.centred_resized',
+    'imgdrive.co': 'img.pic',
+    'imgclick.net': 'img.pic',
   }
+
+  // special case
+  if (hostname === 'imgur.com')
+    // not albums plz
+    if (window.location.pathname.substr(0, 3) !== '/a/')
+      findAndSet('link[rel=image_src]', 'href');
+
+  if (!imgURL && hostname in hostnameToSelector)
+    setOrSubmit(hostnameToSelector[hostname]);
 
   if (imgURL)
     window.location = imgURL;
